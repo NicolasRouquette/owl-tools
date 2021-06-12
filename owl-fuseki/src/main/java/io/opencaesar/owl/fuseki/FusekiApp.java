@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.Optional;
 
@@ -225,7 +226,7 @@ public class FusekiApp {
         URL classURL = FusekiApp.class.getClassLoader().getResource(resourceName);
         if (null == classURL)
             throw new IllegalArgumentException("Cannot find " + qualifiedClassName + " on the classpath.");
-        String path = classURL.getPath().replaceFirst("file:", "");
+        String path = Paths.get(classURL.toURI()).toFile().getAbsolutePath();
         String jar = path.substring(0, path.indexOf('!'));
         File f = new File(jar);
         if (!f.exists() || !f.canRead())
